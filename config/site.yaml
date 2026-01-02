@@ -1,0 +1,40 @@
+# Site Configuration
+site:
+  name: Seashore Lab
+  description: TypeScript AI Agent Development Framework
+  url: https://seashore.ai
+  repo: https://github.com/seashore-lab/seashore
+
+# Navigation
+navigation:
+  - label: Products
+    items:
+      - label: seashore
+        description: Modular TypeScript Agent Framework
+        url: https://github.com/seashore-lab/seashore
+        icon: package
+
+  - label: Docs
+    url: https://docs.seashore.ai
+
+  - label: Resources
+    url: /resources
+
+  - label: About
+    url: /about
+
+# Footer
+footer:
+  links:
+    - label: GitHub
+      url: https://github.com/seashore-lab
+      icon: github
+    - label: Discord
+      url: https://discord.gg/seashore
+      icon: message-square
+    - label: X
+      url: https://x.com/seashore_ai
+      icon: x
+
+  email: hello@seashore.ai
+  copyright: © 2025 Seashore Lab. All rights reserved.

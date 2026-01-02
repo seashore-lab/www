@@ -1,0 +1,163 @@
+# Code Examples Configuration
+examples:
+  - id: basic-agent
+    title: Basic Agent
+    description: Create a simple conversational AI agent with just a few lines of code.
+    category: Getting Started
+    code: |
+      import { createAgent } from '@seashore/agent'
+      import { openaiText } from '@seashore/llm'
+
+      const agent = createAgent({
+        name: 'assistant',
+        model: openaiText('gpt-4o'),
+        systemPrompt: 'You are a helpful assistant.',
+      })
+
+      const result = await agent.run({
+        messages: [{
+          role: 'user',
+          content: 'Hello! How are you?'
+        }],
+      })
+
+      console.log(result.content)
+
+  - id: agent-with-tools
+    title: Agent with Tools
+    description: Equip your agent with tools to interact with the world - APIs, databases, and more.
+    category: Core Features
+    code: |
+      import { createAgent } from '@seashore/agent'
+      import { openaiText } from '@seashore/llm'
+      import { defineTool } from '@seashore/tool'
+      import { z } from 'zod'
+
+      const weatherTool = defineTool({
+        name: 'get_weather',
+        description: 'Get weather for a location',
+        inputSchema: z.object({
+          city: z.string(),
+        }),
+        execute: async ({ city }) => {
+          // Fetch real weather data
+          return { temperature: 72, condition: 'sunny' }
+        },
+      })
+
+      const agent = createAgent({
+        name: 'weather-assistant',
+        model: openaiText('gpt-4o'),
+        tools: [weatherTool],
+      })
+
+      const result = await agent.run(
+        'What is the weather in Tokyo?'
+      )
+
+  - id: workflows
+    title: Multi-Step Workflows
+    description: Chain multiple AI operations together with visual workflow composition.
+    category: Advanced
+    code: |
+      import { createWorkflow, createLLMNode } from '@seashore/workflow'
+      import { openaiText } from '@seashore/llm'
+
+      // Step 1: Generate outline
+      const outlineNode = createLLMNode({
+        name: 'generate-outline',
+        adapter: openaiText('gpt-4o'),
+        systemPrompt: 'You are an outline expert.',
+        prompt: (input) =>
+          `Create an outline for: ${input.topic}`,
+      })
+
+      // Step 2: Write content
+      const contentNode = createLLMNode({
+        name: 'write-content',
+        adapter: openaiText('gpt-4o'),
+        messages: (input, ctx) => {
+          const outline = ctx.nodeOutputs['generate-outline']
+          return [
+            { role: 'system', content: 'Write based on outline.' },
+            { role: 'user', content: `Topic: ${input.topic}\nOutline: ${outline}` },
+          ]
+        },
+      })
+
+      const workflow = createWorkflow({
+        name: 'article-writer',
+        nodes: [outlineNode, contentNode],
+        edges: [
+          { from: 'generate-outline', to: 'write-content' }
+        ],
+        startNode: 'generate-outline',
+      })
+
+      const result = await workflow.execute({ topic: 'AI Agents' })
+
+  - id: rag
+    title: RAG Pipeline
+    description: Build retrieval-augmented generation systems with vector search.
+    category: Advanced
+    code: |
+      import { createRAG, createVectorRetriever } from '@seashore/rag'
+      import { createVectorStore } from '@seashore/vectordb'
+      import { openaiText, openaiEmbedding } from '@seashore/llm'
+
+      // Set up vector store
+      const vectorStore = await createVectorStore({
+        connectionString: process.env.DATABASE_URL,
+      })
+      const collection = await vectorStore.createCollection({
+        name: 'docs',
+        dimension: 1536,
+      })
+
+      // Create retriever with embeddings
+      const retriever = createVectorRetriever({
+        collection,
+        embed: (text) => openaiEmbedding().embed(text),
+      })
+
+      // Create RAG pipeline
+      const rag = createRAG({ retriever })
+
+      // Query with retrieved context
+      const context = await rag.retrieve('What is TypeScript?')
+      const answer = await openaiText('gpt-4o').chat({
+        messages: [
+          { role: 'system', content: context.systemPrompt },
+          { role: 'user', content: 'What is TypeScript?' },
+        ],
+      })
+
+  - id: memory
+    title: Conversation Memory
+    description: Give your agents persistent memory across conversations.
+    category: Advanced
+    code: |
+      import { createAgent } from '@seashore/agent'
+      import { createConversationMemory } from '@seashore/memory'
+      import { openaiText } from '@seashore/llm'
+
+      // Create memory storage
+      const memory = createConversationMemory({
+        store: await createMemoryStore({
+          connectionString: process.env.DATABASE_URL,
+        }),
+      })
+
+      const agent = createAgent({
+        name: 'chatbot',
+        model: openaiText('gpt-4o'),
+        systemPrompt: 'You are a helpful assistant with memory.',
+        memory, // Enable persistent memory
+      })
+
+      // First conversation
+      await agent.run('My name is Alice')
+
+      // Later - agent remembers!
+      await agent.run('What is my name?')
+      // Agent: "Your name is Alice!"

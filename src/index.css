@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color Palette - Coastal Technical */
+  --color-sand-50: #FAF8F5;
+  --color-sand-100: #F5F0E8;
+  --color-sand-200: #E8E0D4;
+  --color-sand-300: #D4C9B8;
+  --color-sand-400: #B8A894;
+  --color-sand-500: #9A8A72;
+  --color-sand-600: #7A6B58;
+  --color-sand-700: #5E5143;
+  --color-sand-800: #423D36;
+  --color-sand-900: #2A2825;
+
+  --color-ocean-50: #F0F8FA;
+  --color-ocean-100: #D9ECF4;
+  --color-ocean-200: #B3D9E8;
+  --color-ocean-300: #7FBDD4;
+  --color-ocean-400: #4E9CBD;
+  --color-ocean-500: #2A80A5;
+  --color-ocean-600: #1E6684;
+  --color-ocean-700: #174D64;
+  --color-ocean-800: #123547;
+  --color-ocean-900: #0A1628;
+
+  --color-coral-50: #FFF0EE;
+  --color-coral-100: #FFDCD6;
+  --color-coral-200: #FFB9AD;
+  --color-coral-300: #FF8A76;
+  --color-coral-400: #FF5A43;
+  --color-coral-500: #E85D4C;
+  --color-coral-600: #C44637;
+  --color-coral-700: #9D362A;
+  --color-coral-800: #762B22;
+  --color-coral-900: #5A221B;
+
+  --color-sage-50: #F5F8F5;
+  --color-sage-100: #E3EEE6;
+  --color-sage-200: #C5DDD0;
+  --color-sage-300: #95C5B0;
+  --color-sage-400: #6BAD92;
+  --color-sage-500: #4A9479;
+  --color-sage-600: #3A7660;
+  --color-sage-700: #2D5C4B;
+  --color-sage-800: #23453B;
+  --color-sage-900: #1A332C;
+
+  /* Typography */
+  --font-display: 'Crimson Pro', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-code: 'JetBrains Mono', monospace;
+
+  /* Light Mode (Default) */
+  --color-bg: var(--color-sand-50);
+  --color-bg-card: #FFFFFF;
+  --color-bg-secondary: var(--color-sand-100);
+  --color-fg: var(--color-ocean-900);
+  --color-fg-muted: var(--color-sand-600);
+  --color-border: var(--color-sand-200);
+  --color-accent: var(--color-coral-500);
+  --color-accent-hover: var(--color-coral-600);
+  --color-accent-fg: #FFFFFF;
+
+  --color-code-bg: var(--color-ocean-900);
+  --color-code-fg: var(--color-ocean-50);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply bg-bg text-fg;
+    font-family: var(--font-body);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  code, pre {
+    @apply font-code;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-sand-400 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-sand-500;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .wave-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-blend-mode: overlay;
+  }
+
+  .glass-card {
+    @apply bg-bg-card/80 backdrop-blur-md border border-border/50;
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+}
+
+/* Dark mode */
+.dark {
+  --color-bg: var(--color-ocean-900);
+  --color-bg-card: var(--color-ocean-800);
+  --color-bg-secondary: var(--color-ocean-800);
+  --color-fg: var(--color-sand-50);
+  --color-fg-muted: var(--color-sand-400);
+  --color-border: var(--color-ocean-700);
+  --color-accent: var(--color-coral-400);
+  --color-accent-hover: var(--color-coral-300);
+  --color-accent-fg: var(--color-ocean-900);
+
+  --color-code-bg: var(--color-sand-900);
+  --color-code-fg: var(--color-sand-50);
+}

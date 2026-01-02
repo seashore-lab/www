@@ -1,0 +1,65 @@
+# Resources Configuration
+resources:
+  - id: getting-started-guide
+    title: Getting Started Guide
+    description: A comprehensive guide to building your first AI agent with Seashore. Learn the core concepts, set up your environment, and create powerful agents in minutes.
+    image: /images/resources/guide.svg
+    url: https://docs.seashore.ai/getting-started
+    category: Guide
+    featured: true
+
+  - id: react-integration
+    title: Building AI-Powered React Apps
+    description: Learn how to integrate Seashore agents into React applications. Includes examples of streaming responses, state management, and generative UI.
+    image: /images/resources/react.svg
+    url: https://docs.seashore.ai/react-integration
+    category: Tutorial
+    featured: true
+
+  - id: workflow-orchestration
+    title: Advanced Workflow Patterns
+    description: Master complex multi-step AI workflows. Discover patterns for conditional execution, parallel processing, and error handling in agent pipelines.
+    image: /images/resources/workflows.svg
+    url: https://docs.seashore.ai/workflows
+    category: Tutorial
+    featured: true
+
+  - id: rag-best-practices
+    title: RAG Architecture Patterns
+    description: Deep dive into Retrieval-Augmented Generation. Learn vector database setup, chunking strategies, and context optimization for better AI responses.
+    image: /images/resources/rag.svg
+    url: https://docs.seashore.ai/rag
+    category: Architecture
+    featured: false
+
+  - id: memory-systems
+    title: Designing Memory for AI Agents
+    description: Explore different memory architectures for AI agents. From short-term conversation history to long-term knowledge retention.
+    image: /images/resources/memory.svg
+    url: https://docs.seashore.ai/memory
+    category: Architecture
+    featured: false
+
+  - id: deployment-guide
+    title: Deploying Agents to Production
+    description: A practical guide to deploying Seashore agents. Covers Cloudflare Workers, Node.js, Docker, and CI/CD best practices.
+    image: /images/resources/deploy.svg
+    url: https://docs.seashore.ai/deployment
+    category: DevOps
+    featured: false
+
+  - id: evaluation-metrics
+    title: Measuring Agent Performance
+    description: Learn how to evaluate and improve your AI agents. Covers automated testing, quality metrics, and A/B testing frameworks.
+    image: /images/resources/evaluation.svg
+    url: https://docs.seashore.ai/evaluation
+    category: Engineering
+    featured: false
+
+  - id: security-guardrails
+    title: AI Security Best Practices
+    description: Implement guardrails, content filtering, and PII detection in your agents. Learn security patterns for production AI systems.
+    image: /images/resources/security.svg
+    url: https://docs.seashore.ai/security
+    category: Security
+    featured: false
