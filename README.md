@@ -1,14 +1,14 @@
 # Seashore Lab Website
 
-Official website for Seashore Lab, built with React, Vite, and TanStack Router.
+Official website for Seashore Lab, built with VitePress, Vue 3, and Tailwind CSS 4.
 
 ## Tech Stack
 
-- **React 18** - UI library
-- **Vite 6** - Build tool and dev server
-- **TanStack Router** - File-based routing with SSR support
-- **Tailwind CSS 4** - Styling
+- **VitePress 1.6** - Static site generator
+- **Vue 3** - UI framework for custom components
+- **Tailwind CSS 4** - Styling with anime-themed pink/blue palette
 - **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
 
 ## Getting Started
 
@@ -29,79 +29,132 @@ pnpm preview
 pnpm typecheck
 ```
 
+Visit `http://localhost:5173` when the dev server is running.
+
 ## Project Structure
 
 ```
 website/
-├── config/           # Site configuration files
-│   ├── site.yaml     # Navigation, footer, links
-│   ├── resources.yaml # Resource cards content
-│   ├── examples.yaml # Code examples
-│   └── about.md      # About page content
-├── public/           # Static assets
-├── src/
-│   ├── app/          # Route components
-│   ├── components/   # Reusable UI components
-│   └── lib/          # Utilities and config
-├── index.html
-├── vite.config.ts
-└── package.json
+├── docs/
+│   ├── .vitepress/
+│   │   ├── config.ts          # VitePress configuration
+│   │   └── theme/             # Custom theme extension
+│   │       ├── index.ts       # Theme entry point
+│   │       ├── components/    # Vue components
+│   │       ├── styles/        # Custom CSS (anime theme)
+│   │       ├── composables/   # Vue composables
+│   │       ├── utils/         # Utilities
+│   │       └── lib/           # Content data (examples, resources)
+│   ├── public/                # Static assets (avatar.png, favicon.svg)
+│   ├── index.md               # Homepage
+│   ├── resources.md           # Resources page
+│   └── about.md               # About page
+├── .github/workflows/         # GitHub Actions deployment
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
 ```
 
-## Configuration
+## Content Management
 
-All site content is configured in the `config/` directory:
+### Pages
 
-- **`config/site.yaml`** - Site metadata, navigation links, footer content
-- **`config/resources.yaml`** - Resource cards for the Resources page
-- **`config/examples.yaml`** - Code examples for the showcase
-- **`config/about.md`** - About page content (Markdown)
+Pages are Markdown files in the `docs/` directory:
 
-To update site content, edit these files rather than modifying React components directly.
+- **`docs/index.md`** - Homepage with Hero, Examples, and ResourcesPreview components
+- **`docs/resources.md`** - Resources page with all resource cards
+- **`docs/about.md`** - About page with markdown content
 
-## Deployment
+### Dynamic Content
 
-The site is configured to deploy to GitHub Pages via GitHub Actions.
+Content data is stored in `docs/.vitepress/theme/lib/config.ts`:
 
-### Setup GitHub Pages
+- **`examples`** - Code examples showcased on the homepage
+- **`resources`** - Resource card data for the Resources page
 
-1. Go to your repository Settings → Pages
-2. Set Source to "GitHub Actions"
-3. Push to the `main` or `master` branch to trigger deployment
+To update examples or resources, edit the arrays in `config.ts`.
 
-The workflow (`.github/workflows/deploy.yml`) will:
-1. Install dependencies with pnpm
-2. Build the site with Vite
-3. Deploy the `dist/` folder to GitHub Pages
+### Site Configuration
+
+Site metadata, navigation, and footer are configured in `docs/.vitepress/config.ts`:
+
+```typescript
+export default defineConfig({
+  title: 'Seashore Lab',
+  description: 'TypeScript AI Agent Development Framework',
+  themeConfig: {
+    nav: [
+      { text: 'Products', items: [...] },
+      { text: 'Docs', link: 'https://docs.seashore.ai' },
+      { text: 'Resources', link: '/resources' },
+      { text: 'About', link: '/about' },
+    ],
+    // ... more config
+  },
+})
+```
 
 ## Customization
 
-### Colors
+### Styling Theme
 
-Edit `src/index.css` to customize the color scheme:
+The site uses an anime-themed pink/blue color palette defined in `docs/.vitepress/theme/styles/tailwind.css`:
 
 ```css
---color-bg: var(--color-sand-50);      /* Light mode background */
---color-bg: var(--color-ocean-900);    /* Dark mode background */
---color-accent: var(--color-coral-500); /* Primary accent */
+@theme {
+  --color-pink-50: #FFF5F8;
+  --color-pink-500: #FF5CA3;
+  --color-blue-500: #0EA5E9;
+  /* ... more colors */
+}
 ```
 
-### Fonts
+### Custom Components
 
-The site uses:
-- **Instrument Serif** (display/headings)
-- **DM Sans** (body text)
-- **JetBrains Mono** (code)
+Vue components in `docs/.vitepress/theme/components/`:
 
-Fonts are loaded via `@fontsource` packages in `package.json`.
+- **`Navigation.vue`** - Sticky header with dropdowns and theme toggle
+- **`Footer.vue`** - Footer with social links
+- **`Hero.vue`** - Animated hero section
+- **`Examples.vue`** - Tabbed code examples with copy button
+- **`ResourceCard.vue`** - Individual resource card component
+- **`ResourcesPreview.vue`** - Grid of featured resources
 
-### Content
+### Dark Mode
 
-Edit files in `config/` to update:
-- Navigation items and links
-- Resources and their content
-- Code examples
-- About page text
+Dark mode is handled by the `useTheme` composable in `docs/.vitepress/theme/composables/useTheme.ts`. It:
+
+- Persists preference to localStorage
+- Respects `prefers-color-scheme` media query
+- Toggles `.light` / `.dark` class on `<html>`
+
+## Deployment
+
+The site deploys to GitHub Pages via GitHub Actions (`.github/workflows/deploy.yml`).
+
+### Local Deployment Testing
+
+```bash
+pnpm build
+pnpm preview
+```
+
+### GitHub Pages Setup
+
+1. Go to repository Settings → Pages
+2. Set Source to "GitHub Actions"
+3. Push to `main`/`master` branch to trigger deployment
+
+The workflow will:
+1. Install dependencies with pnpm
+2. Build the site with VitePress
+3. Deploy the `docs/.vitepress/dist/` folder to GitHub Pages
+
+## Adding New Pages
+
+1. Create a new `.md` file in `docs/` (e.g., `docs/blog.md`)
+2. Add the page to navigation in `docs/.vitepress/config.ts`
+3. Optionally create custom Vue components in `docs/.vitepress/theme/components/`
 
 ## License
 

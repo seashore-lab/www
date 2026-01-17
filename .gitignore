@@ -37,3 +37,4 @@ lerna-debug.log*
 *.tsbuildinfo
 
 .tanstack/tmp
+docs/.vitepress/cache

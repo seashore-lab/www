@@ -1,3 +1,8 @@
+---
+title: About
+description: Learn about Seashore Lab's mission to democratize AI agent development.
+---
+
 # About Seashore Lab
 
 We're building the **infrastructure for the AI-native era** — empowering developers to create intelligent agents that reason, remember, and take action.

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -12,9 +12,10 @@
     "noEmit": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./docs/.vitepress/theme/*"]
+    },
+    "types": ["vitepress/client"]
   },
-  "include": ["src"],
+  "include": ["docs/.vitepress/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
